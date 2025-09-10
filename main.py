@@ -3,7 +3,7 @@ from models import Usuario
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from db import db
 import hashlib 
-from flask import request
+
 
 
 
@@ -82,4 +82,5 @@ def logout():
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
+
     app.run(debug=True)
