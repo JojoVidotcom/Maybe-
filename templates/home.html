@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            min-height: 150vh; /* Permite deslizar para baixo */
+            width: 100vw;
+            overflow-y: auto;
+        }
+        .top-bar {
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            position: relative;
+            margin-top: 0;
+        }
+        .welcome-texts {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            flex: 1;
+            margin-top: 30px;
+        }
+        .welcome-texts h1, .welcome-texts h2 {
+            margin: 0 0 10px 0;
+            text-align: center;
+        }
+        .side-image {
+            position: absolute;
+            right: 30px;
+            top: 20px;
+            display: flex;
+            align-items: center;
+            height: 100px;
+        }
+        .side-image img {
+            max-height: 80px;
+            width: auto;
+        }
+        .gaster-img-center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 32px;
+        }
+        .gaster-img-center img {
+            max-width: 320px;
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .auth-buttons-container {
+        position: fixed;
+        left: 50%;
+        transform: translateX(-50%);
+        bottom: 24px; /* Fica no final da página */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 101; /* Fica acima de outros elementos */
+    }
+        .auth-btn {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+            text-decoration: none;
+            margin-bottom: 16px;
+            transition: background 0.2s;
+            width: 200px;
+            text-align: center;
+        }
+        .auth-btn:last-child {
+            margin-bottom: 0;
+        }
+        .auth-btn:hover {
+            background-color: #217dbb;
+        }
+        .logout-line-container {
+            position: fixed;
+            left: 50%;
+            bottom: 24px;
+            transform: translateX(-50%);
+            z-index: 100;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+        }
+        .logout-link {
+            color: #e74c3c;
+            text-decoration: none;
+            font-size: 20px;
+            font-weight: bold;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .logout-link:hover {
+            color: #b03a2e;
+            text-decoration: underline;
+        }
+        @media (max-width: 600px) {
+            .side-image {
+                position: static;
+                margin-top: 10px;
+                margin-bottom: 10px;
+                justify-content: center;
+            }
+            .top-bar {
+                flex-direction: column;
+                align-items: center;
+            }
+            .auth-buttons-container {
+                bottom: 20px;
+            }
+            .gaster-img-center img {
+                max-width: 90vw;
+            }
+            .logout-line-container {
+                bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <div class="welcome-texts">
+            {% if current_user.is_authenticated %}
+                <h1>Bem-vindo, {{ current_user.nome }}!</h1>
+            {% else %}
+                <h1>Bem-vindo, visitante!</h1>
+            {% endif %}
+            <h2></h2>
+        </div>
+        <div class="side-image">
+            <img src="{{ url_for('static', filename='Capturar.PNG') }}" alt="Imagem lateral">
+        </div>
+    </div>
+    <!-- Gaster.png centralizado, só se logado -->
+    {% if current_user.is_authenticated %}
+        <div class="gaster-img-center">
+            <img src="{{ url_for('static', filename='gaster.png') }}" alt="Gaster centralizado">
+        </div>
+        <!-- Linha de logout no final da página, centralizada -->
+        <div class="logout-line-container">
+            <a href="{{ url_for('logout') }}" class="logout-link">logout</a>
+        </div>
+    {% endif %}
+    <!-- Botões de login/cadastro para visitantes -->
+   {% if not current_user.is_authenticated %}
+        <div class="auth-buttons-container">
+            <a href="{{ url_for('login') }}" class="auth-btn">Login</a>
+            <a href="{{ url_for('registrar') }}" class="auth-btn">Cadastrar</a>
+        </div>
+    {% endif %}
+</body>
+</html>

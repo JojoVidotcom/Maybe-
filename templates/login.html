@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            position: relative;
+            min-height: 100vh;
+            width: 100vw;
+            overflow-x: hidden;
+        }
+        .top-left-back {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            z-index: 10;
+        }
+        .top-left-back img {
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+        }
+        .form-container {
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+        form {
+            margin-top: 40px;
+            background: #f7f7f7;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .error-message {
+            color: #fff;
+            background: #e74c3c;
+            padding: 4px 12px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 14px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        /* Remove container next to form to put button at page bottom */
+        .register-btn-bottom-container {
+            position: fixed;
+            left: 0;
+            bottom: 32px;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            z-index: 9;
+        }
+        .register-btn {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 14px 32px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .register-btn:hover {
+            background-color: #217dbb;
+        }
+        /* Responsive */
+        @media (max-width: 600px) {
+            .form-container {
+                align-items: flex-start;
+            }
+            .register-btn-bottom-container {
+                bottom: 16px;
+            }
+            .top-left-back img {
+                width: 32px;
+                height: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Seta de voltar no topo esquerdo -->
+    <div class="top-left-back">
+        <a href="{{ url_for('home') }}">
+            <img src="{{ url_for('static', filename='seta voltar.png') }}" alt="Voltar para Home">
+        </a>
+    </div>
+
+    <div class="form-container">
+        <form action="" method="post">
+            {% if error %}
+                <div class="error-message">{{ error }}</div>
+            {% endif %}
+            <label for="nomeForm">Nome:</label>
+            <input type="text" name="nomeForm" id="nomeForm"><br>
+            <label for="senhaForm">Senha:</label>
+            <input type="password" name="senhaForm" id="senhaForm"><br>
+            <input type="submit" value="Login">
+        </form>
+    </div>
+    <!-- Botão cadastrar centralizado no final da página -->
+    <div class="register-btn-bottom-container">
+        <a href="{{ url_for('registrar') }}" class="register-btn">Cadastrar</a>
+    </div>
+</body>
+</html>
