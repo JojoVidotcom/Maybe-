@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            position: relative;
+            min-height: 100vh;
+            width: 100vw;
+            overflow-x: hidden;
+        }
+        .top-left-back {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            z-index: 10;
+        }
+        .top-left-back img {
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+        }
+        .form-container {
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+        form {
+            margin-top: 40px;
+            background: #f7f7f7;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .error-message {
+            color: #fff;
+            background: #e74c3c;
+            padding: 4px 12px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            text-align: center;
+            font-size: 14px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        @media (max-width: 600px) {
+            .top-left-back img {
+                width: 32px;
+                height: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Seta de voltar no topo esquerdo -->
+    <div class="top-left-back">
+        <a href="{{ url_for('home') }}">
+            <img src="{{ url_for('static', filename='seta voltar.png') }}" alt="Voltar para Home">
+        </a>
+    </div>
+
+    <div class="form-container">
+        <form action="" method="post">
+            {% if error %}
+                <div class="error-message">{{ error }}</div>
+            {% endif %}
+            <label for="nomeForm">Nome:</label>
+            <input type="text" name="nomeForm" id="nomeForm"><br>
+            <label for="senhaForm">Senha:</label>
+            <input type="password" name="senhaForm" id="senhaForm"><br>
+            <input type="submit" value="Cadastrar">
+        </form>
+    </div>
+</body>
+</html>
