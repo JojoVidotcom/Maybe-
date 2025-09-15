@@ -3,170 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Home - Redormouse</title>
     <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-        body {
-            min-height: 150vh; /* Permite deslizar para baixo */
-            width: 100vw;
-            overflow-y: auto;
-        }
-        .top-bar {
-            width: 100vw;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            position: relative;
-            margin-top: 0;
-        }
-        .welcome-texts {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            flex: 1;
-            margin-top: 30px;
-        }
-        .welcome-texts h1, .welcome-texts h2 {
-            margin: 0 0 10px 0;
-            text-align: center;
-        }
-        .side-image {
-            position: absolute;
-            right: 30px;
-            top: 20px;
-            display: flex;
-            align-items: center;
-            height: 100px;
-        }
-        .side-image img {
-            max-height: 80px;
-            width: auto;
-        }
-        .gaster-img-center {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 32px;
-        }
-        .gaster-img-center img {
-            max-width: 320px;
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-        .auth-buttons-container {
-        position: fixed;
-        left: 50%;
-        transform: translateX(-50%);
-        bottom: 24px; /* Fica no final da página */
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        z-index: 101; /* Fica acima de outros elementos */
-    }
-        .auth-btn {
-            background-color: #3498db;
-            color: #fff;
-            border: none;
-            padding: 12px 28px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 18px;
-            text-decoration: none;
-            margin-bottom: 16px;
-            transition: background 0.2s;
-            width: 200px;
-            text-align: center;
-        }
-        .auth-btn:last-child {
-            margin-bottom: 0;
-        }
-        .auth-btn:hover {
-            background-color: #217dbb;
-        }
-        .logout-line-container {
-            position: fixed;
-            left: 50%;
-            bottom: 24px;
-            transform: translateX(-50%);
-            z-index: 100;
-            width: 100vw;
-            display: flex;
-            justify-content: center;
-        }
-        .logout-link {
-            color: #e74c3c;
-            text-decoration: none;
-            font-size: 20px;
-            font-weight: bold;
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            transition: color 0.2s;
-        }
-        .logout-link:hover {
-            color: #b03a2e;
-            text-decoration: underline;
-        }
-        @media (max-width: 600px) {
-            .side-image {
-                position: static;
-                margin-top: 10px;
-                margin-bottom: 10px;
-                justify-content: center;
-            }
-            .top-bar {
-                flex-direction: column;
-                align-items: center;
-            }
-            .auth-buttons-container {
-                bottom: 20px;
-            }
-            .gaster-img-center img {
-                max-width: 90vw;
-            }
-            .logout-line-container {
-                bottom: 10px;
-            }
-        }
+        html, body { height: 100%; margin: 0; padding: 0; font-family: 'Segoe UI', 'Liberation Sans', Arial, sans-serif; background-color: #f6f8fa; color: #24292f; }
+        body { min-height: 100vh; width: 100vw; overflow-y: auto; }
+        .gh-navbar { width: 100vw; background: #24292f; color: #fff; height: 56px; display: flex; align-items: center; padding: 0 24px; box-sizing: border-box; position: sticky; top: 0; z-index: 200; box-shadow: 0 2px 4px #00000007; }
+        .gh-navbar .gh-logo { font-weight: 700; font-size: 1.35rem; letter-spacing: 0.5px; color: #fff; text-decoration: none; display: flex; align-items: center; }
+        .gh-navbar .gh-logo img { height: 32px; margin-right: 10px; }
+        .gh-navbar .gh-spacer { flex: 1; }
+        .gh-navbar .gh-user { font-size: 1rem; color: #fff; margin-right: 16px; }
+        .gh-navbar .gh-btn, .gh-navbar .gh-btn-logout { background: #2ea44f; color: #fff; border: none; padding: 6px 16px; border-radius: 6px; font-size: 1rem; font-weight: 500; cursor: pointer; text-decoration: none; margin-left: 10px; transition: background 0.2s; }
+        .gh-navbar .gh-btn-logout { background: #e74c3c; }
+        .gh-navbar .gh-btn:hover { background: #238636; }
+        .gh-navbar .gh-btn-logout:hover { background: #b03a2e; }
+        .blog-container { max-width: 800px; margin: 42px auto 0 auto; background: #fff; border-radius: 8px; padding: 32px 32px 24px 32px; box-shadow: 0px 2px 12px #0001; border: 1px solid #d0d7de; }
+        .blog-title { font-size: 1.7rem; font-weight: 600; color: #24292f; margin-bottom: 24px; letter-spacing: 0.5px; }
+        .mensagem { border-bottom: 1px solid #d0d7de; padding: 16px 0 12px 0; }
+        .mensagem:last-child { border-bottom: none; }
+        .mensagem-autor { font-weight: 600; color: #0969da; font-size: 1rem; }
+        .mensagem-conteudo { margin: 8px 0 0 0; white-space: pre-line; font-size: 1.06rem; }
+        .deletar-btn { font-size:11px; padding:2px 7px; margin-left:8px; background:#e74c3c; color:#fff; border:none; border-radius:4px; cursor:pointer; }
+        .blog-form { margin-top: 28px; display: flex; flex-direction: column; gap: 10px; background: #f6f8fa; border: 1px solid #d0d7de; border-radius: 8px; padding: 22px 18px 16px 18px; }
+        .blog-form label { font-weight: 500; }
+        .blog-form textarea { resize: vertical; min-height: 60px; font-size: 16px; padding: 8px; border-radius: 6px; border: 1px solid #d0d7de; background: #fff; }
+        .blog-form button { align-self: flex-end; background: #2ea44f; color: #fff; border: none; padding: 10px 24px; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: 500; transition: background 0.2s; box-shadow: 0 1px 0 #0001; }
+        .blog-form button:hover { background: #238636; }
+        .gh-login-prompt { margin-top: 24px; text-align: center; color: #57606a; }
+        @media (max-width: 600px) { .gh-navbar { padding: 0 4vw; height: 48px; } .blog-container { padding: 12px 2vw 12px 2vw; margin-top: 14vw; } .blog-title { font-size: 1.2rem; } .blog-form { padding: 10px 2vw 12px 2vw; } }
     </style>
 </head>
 <body>
-    <div class="top-bar">
-        <div class="welcome-texts">
-            {% if current_user.is_authenticated %}
-                <h1>Bem-vindo, {{ current_user.nome }}!</h1>
-            {% else %}
-                <h1>Bem-vindo, visitante!</h1>
-            {% endif %}
-            <h2></h2>
-        </div>
-        <div class="side-image">
-            <img src="{{ url_for('static', filename='Capturar.PNG') }}" alt="Imagem lateral">
-        </div>
+    <nav class="gh-navbar">
+        <a class="gh-logo" href="/">
+            <img src="{{ url_for('static', filename='Capturar.PNG') }}" alt="Logo">
+            Redormouse
+        </a>
+        <div class="gh-spacer"></div>
+        {% if current_user.is_authenticated %}
+            <span class="gh-user">Olá, {{ current_user.nome }}</span>
+            <a href="{{ url_for('logout') }}" class="gh-btn-logout">Sair</a>
+        {% else %}
+            <a href="{{ url_for('login') }}" class="gh-btn">Login</a>
+            <a href="{{ url_for('registrar') }}" class="gh-btn" style="background:#0969da;">Cadastrar</a>
+        {% endif %}
+    </nav>
+    <div class="blog-container">
+        <div class="blog-title">Mensagens do Blog</div>
+        {% if mensagens %}
+            {% for msg in mensagens %}
+                <div class="mensagem">
+                    <span class="mensagem-autor">{{ msg.autor }}</span>
+                    {% if current_user.is_authenticated and msg.autor == current_user.nome %}
+                        <form action="{{ url_for('deletar_mensagem', msg_id=msg.id) }}" method="post" style="display:inline;">
+                            <button type="submit" class="deletar-btn">deletar</button>
+                        </form>
+                    {% endif %}
+                    <div class="mensagem-conteudo">{{ msg.conteudo }}</div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div style="text-align:center;color:#aaa;">Nenhuma mensagem ainda.</div>
+        {% endif %}
+        {% if current_user.is_authenticated %}
+            <form class="blog-form" method="POST">
+                <label for="conteudo">Nova mensagem:</label>
+                <textarea name="conteudo" id="conteudo" required placeholder="Escreva sua mensagem..."></textarea>
+                <button type="submit">Publicar</button>
+            </form>
+        {% else %}
+            <div class="gh-login-prompt">
+                <em>Faça login para publicar uma mensagem.</em>
+            </div>
+        {% endif %}
     </div>
-    
-    {% if current_user.is_authenticated %}
-        <div class="gaster-img-center">
-            <img src="{{ url_for('static', filename='gaster.png') }}" alt="Gaster centralizado">
-        </div>
-        
-        <div class="logout-line-container">
-            <a href="{{ url_for('logout') }}" class="logout-link">logout</a>
-        </div>
-    {% endif %}
-
-   {% if not current_user.is_authenticated %}
-        <div class="auth-buttons-container">
-            <a href="{{ url_for('login') }}" class="auth-btn">Login</a>
-            <a href="{{ url_for('registrar') }}" class="auth-btn">Cadastrar</a>
-        </div>
-    {% endif %}
 </body>
 </html>

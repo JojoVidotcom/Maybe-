@@ -1,234 +1,54 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Login - Redormouse</title>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            position: relative;
-            min-height: 100vh;
-            width: 100vw;
-            overflow-x: hidden;
-        }
-        .top-left-back {
-            position: absolute;
-            top: 16px;
-            left: 16px;
-            z-index: 10;
-        }
-        .top-left-back img {
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
-        }
-        .form-container {
-            width: 100vw;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
-        }
-        form {
-            margin-top: 40px;
-            background: #f7f7f7;
-            padding: 20px 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
-        .error-message {
-            color: #fff;
-            background: #e74c3c;
-            padding: 4px 12px;
-            border-radius: 4px;
-            margin-bottom: 10px;
-            text-align: center;
-            font-size: 14px;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        /* Remove container next to form to put button at page bottom */
-        .register-btn-bottom-container {
-            position: fixed;
-            left: 0;
-            bottom: 32px;
-            width: 100vw;
-            display: flex;
-            justify-content: center;
-            z-index: 9;
-        }
-        .register-btn {
-            background-color: #3498db;
-            color: #fff;
-            border: none;
-            padding: 14px 32px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 18px;
-            text-decoration: none;
-            transition: background 0.2s;
-        }
-        .register-btn:hover {
-            background-color: #217dbb;
-        }
-        /* Responsive */
-        @media (max-width: 600px) {
-            .form-container {
-                align-items: flex-start;
-            }
-            .register-btn-bottom-container {
-                bottom: 16px;
-            }
-            .top-left-back img {
-                width: 32px;
-                height: 32px;
-            }
-        }
+        html, body { height: 100%; margin: 0; padding: 0; font-family: 'Segoe UI', 'Liberation Sans', Arial, sans-serif; background-color: #f6f8fa; color: #24292f; }
+        body { min-height: 100vh; width: 100vw; overflow-x: hidden; }
+        .gh-navbar { width: 100vw; background: #24292f; color: #fff; height: 56px; display: flex; align-items: center; padding: 0 24px; box-sizing: border-box; position: sticky; top: 0; z-index: 200; box-shadow: 0 2px 4px #00000007; }
+        .gh-navbar .gh-logo { font-weight: 700; font-size: 1.35rem; letter-spacing: 0.5px; color: #fff; text-decoration: none; display: flex; align-items: center; }
+        .gh-navbar .gh-logo img { height: 32px; margin-right: 10px; }
+        .gh-navbar .gh-spacer { flex: 1; }
+        .gh-navbar .gh-btn { background: #3498db; color: #fff; border: none; padding: 6px 16px; border-radius: 6px; font-size: 1rem; font-weight: 500; cursor: pointer; text-decoration: none; margin-left: 10px; transition: background 0.2s; }
+        .gh-navbar .gh-btn:hover { background: #217dbb; }
+        .form-container { width: 100vw; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; }
+        form { margin-top: 60px; background: #fff; padding: 30px 36px; border-radius: 8px; box-shadow: 0 2px 8px #0001; border: 1px solid #d0d7de; min-width: 300px; }
+        .error-message { color: #fff; background: #e74c3c; padding: 4px 12px; border-radius: 4px; margin-bottom: 10px; text-align: center; font-size: 14px; width: 100%; box-sizing: border-box; }
+        label { font-weight: 500; display: block; margin-top: 16px; }
+        input[type="text"], input[type="password"] { width: 100%; padding: 7px 10px; margin-top: 5px; margin-bottom: 13px; border-radius: 6px; border: 1px solid #d0d7de; background: #f6f8fa; font-size: 16px; box-sizing: border-box; }
+        input[type="submit"] { background: #2ea44f; color: #fff; border: none; padding: 10px 24px; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: 500; transition: background 0.2s; box-shadow: 0 1px 0 #0001; }
+        input[type="submit"]:hover { background: #238636; }
+        .register-btn-bottom-container { position: fixed; left: 0; bottom: 32px; width: 100vw; display: flex; justify-content: center; z-index: 9; }
+        .register-btn { background-color: #3498db; color: #fff; border: none; padding: 14px 32px; border-radius: 4px; cursor: pointer; font-size: 18px; text-decoration: none; transition: background 0.2s; }
+        .register-btn:hover { background-color: #217dbb; }
+        @media (max-width: 600px) { .gh-navbar { padding: 0 4vw; height: 48px; } form { margin-top: 32px; padding: 14px 2vw; min-width: unset; width: 94vw; } .register-btn-bottom-container { bottom: 16px; } }
     </style>
 </head>
 <body>
-    <!-- Seta de voltar no topo esquerdo -->
-    <div class="top-left-back">
-        <a href="{{ url_for('home') }}">
-            <img src="{{ url_for('static', filename='seta voltar.png') }}" alt="Voltar para Home">
+    <nav class="gh-navbar">
+        <a class="gh-logo" href="{{ url_for('home') }}">
+            <img src="{{ url_for('static', filename='Capturar.PNG') }}" alt="Logo">
+            Redormouse
         </a>
-    </div>
-
+        <div class="gh-spacer"></div>
+        <a href="{{ url_for('registrar') }}" class="gh-btn">Cadastrar</a>
+    </nav>
     <div class="form-container">
         <form action="" method="post">
             {% if error %}
                 <div class="error-message">{{ error }}</div>
             {% endif %}
             <label for="nomeForm">Nome:</label>
-            <input type="text" name="nomeForm" id="nomeForm"><br>
+            <input type="text" name="nomeForm" id="nomeForm">
             <label for="senhaForm">Senha:</label>
-            <input type="password" name="senhaForm" id="senhaForm"><br>
+            <input type="password" name="senhaForm" id="senhaForm">
             <input type="submit" value="Login">
         </form>
     </div>
-    <!-- Botão cadastrar centralizado no final da página -->
     <div class="register-btn-bottom-container">
         <a href="{{ url_for('registrar') }}" class="register-btn">Cadastrar</a>
     </div>
 </body>
-=======
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            position: relative;
-            min-height: 100vh;
-            width: 100vw;
-            overflow-x: hidden;
-        }
-        .top-left-back {
-            position: absolute;
-            top: 16px;
-            left: 16px;
-            z-index: 10;
-        }
-        .top-left-back img {
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
-        }
-        .form-container {
-            width: 100vw;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            min-height: 100vh;
-        }
-        form {
-            margin-top: 40px;
-            background: #f7f7f7;
-            padding: 20px 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
-        .error-message {
-            color: #fff;
-            background: #e74c3c;
-            padding: 4px 12px;
-            border-radius: 4px;
-            margin-bottom: 10px;
-            text-align: center;
-            font-size: 14px;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        /* Remove container next to form to put button at page bottom */
-        .register-btn-bottom-container {
-            position: fixed;
-            left: 0;
-            bottom: 32px;
-            width: 100vw;
-            display: flex;
-            justify-content: center;
-            z-index: 9;
-        }
-        .register-btn {
-            background-color: #3498db;
-            color: #fff;
-            border: none;
-            padding: 14px 32px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 18px;
-            text-decoration: none;
-            transition: background 0.2s;
-        }
-        .register-btn:hover {
-            background-color: #217dbb;
-        }
-        /* Responsive */
-        @media (max-width: 600px) {
-            .form-container {
-                align-items: flex-start;
-            }
-            .register-btn-bottom-container {
-                bottom: 16px;
-            }
-            .top-left-back img {
-                width: 32px;
-                height: 32px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <!-- Seta de voltar no topo esquerdo -->
-    <div class="top-left-back">
-        <a href="{{ url_for('home') }}">
-            <img src="{{ url_for('static', filename='seta voltar.png') }}" alt="Voltar para Home">
-        </a>
-    </div>
-
-    <div class="form-container">
-        <form action="" method="post">
-            {% if error %}
-                <div class="error-message">{{ error }}</div>
-            {% endif %}
-            <label for="nomeForm">Nome:</label>
-            <input type="text" name="nomeForm" id="nomeForm"><br>
-            <label for="senhaForm">Senha:</label>
-            <input type="password" name="senhaForm" id="senhaForm"><br>
-            <input type="submit" value="Login">
-        </form>
-    </div>
-    <!-- Botão cadastrar centralizado no final da página -->
-    <div class="register-btn-bottom-container">
-        <a href="{{ url_for('registrar') }}" class="register-btn">Cadastrar</a>
-    </div>
-</body>
->>>>>>> 634fee79c8a40092cb36429b0fad0c09526d57ad
 </html>

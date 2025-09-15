@@ -1,93 +1,138 @@
 from flask import Flask, render_template, request, redirect, url_for
-from models import Usuario
-from flask_login import LoginManager, login_user, logout_user, login_required, current_user
-from db import db
-import hashlib 
-from flask import request
+from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
+import json
+import os
+from cryptography.fernet import Fernet
 
+# ======== CRIPTOGRAFIA =========
+with open("fernet.key", "rb") as f:
+    FERNET_KEY = f.read().strip()
+fernet = Fernet(FERNET_KEY)
 
+ARQUIVO_USUARIOS = "usuarios.json"
+ARQUIVO_MENSAGENS = "mensagens.json"
 
+def carregar_usuarios():
+    if not os.path.exists(ARQUIVO_USUARIOS):
+        return {}
+    try:
+        with open(ARQUIVO_USUARIOS, "rb") as f:
+            data = f.read()
+        decrypted = fernet.decrypt(data)
+        return json.loads(decrypted.decode("utf-8"))
+    except Exception:
+        return {}
+
+def salvar_usuarios(users):
+    data = json.dumps(users, indent=2, ensure_ascii=False).encode("utf-8")
+    encrypted = fernet.encrypt(data)
+    with open(ARQUIVO_USUARIOS, "wb") as f:
+        f.write(encrypted)
+
+def carregar_mensagens():
+    if not os.path.exists(ARQUIVO_MENSAGENS):
+        return []
+    try:
+        with open(ARQUIVO_MENSAGENS, "rb") as f:
+            data = f.read()
+        decrypted = fernet.decrypt(data)
+        return json.loads(decrypted.decode("utf-8"))
+    except Exception:
+        return []
+
+def salvar_mensagens(mensagens):
+    data = json.dumps(mensagens, indent=2, ensure_ascii=False).encode("utf-8")
+    encrypted = fernet.encrypt(data)
+    with open(ARQUIVO_MENSAGENS, "wb") as f:
+        f.write(encrypted)
+
+# ======== FLASK APP ==========
 app = Flask(__name__)
-app.secret_key = 'lancode'
-lm = LoginManager(app)
-lm.login_view = 'login'
-app.config['SQLALCHEMY_DATABASE_URI'] =  'sqlite:///database.db'
-db.init_app(app)
+app.secret_key = "chave-super-secreta"
 
+login_manager = LoginManager()
+login_manager.init_app(app)
 
+class User(UserMixin):
+    def __init__(self, nome):
+        self.id = nome
+        self.nome = nome
 
+    def get_id(self):
+        return self.id
 
+@login_manager.user_loader
+def load_user(user_id):
+    usuarios = carregar_usuarios()
+    if user_id in usuarios:
+        return User(user_id)
+    return None
 
-
-def hash(txt):
-    hash_obj = hashlib.sha256(txt.encode('utf-8'))
-    return hash_obj.hexdigest()
-
-@app.errorhandler(404)
-def page_not_found(e):
-    return render_template('404.html'), 404
-
-@app.errorhandler(500)
-def page_not_found(e):
-    return render_template('500.html'), 500
-
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if current_user.is_authenticated:
-        return redirect(url_for('home'))
-    error = None
-    if request.method == 'POST':
-        nome = request.form['nomeForm']
-        senha = request.form['senhaForm']
-
-        user = db.session.query(Usuario).filter_by(nome=nome, senha=hash(senha)).first()
-        if user:
-            login_user(user)
-            return redirect(url_for('home'))
-        else:
-            error = "Nome ou senha incorretos"
-    return render_template('login.html', error=error)
-
-@lm.user_loader
-def user_loader(id):
-    usuario = db.session.query(Usuario).filter_by(id=id).first()
-    return usuario
-
-@app.route('/')
+@app.route("/", methods=["GET", "POST"])
 def home():
-    return render_template('home.html')
+    mensagens = carregar_mensagens()
+    if request.method == "POST" and current_user.is_authenticated:
+        conteudo = request.form["conteudo"]
+        novo_id = (max([m["id"] for m in mensagens], default=0)) + 1
+        mensagens.append({
+            "id": novo_id,
+            "autor": current_user.nome,
+            "conteudo": conteudo,
+        })
+        salvar_mensagens(mensagens)
+        return redirect(url_for("home"))
+    return render_template("home.html", mensagens=mensagens)
 
-@app.route('/registrar', methods=['GET', 'POST'])
-def registrar():
-    if current_user.is_authenticated:
-        return redirect(url_for('home'))
+@app.route("/deletar_mensagem/<int:msg_id>", methods=["POST"])
+@login_required
+def deletar_mensagem(msg_id):
+    mensagens = carregar_mensagens()
+    mensagens = [m for m in mensagens if not (m["id"] == msg_id and m["autor"] == current_user.nome)]
+    salvar_mensagens(mensagens)
+    return redirect(url_for("home"))
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
     error = None
-    if request.method == 'POST':
-        nome = request.form['nomeForm']
-        senha = request.form['senhaForm']
+    if request.method == "POST":
+        nome = request.form["nomeForm"]
+        senha = request.form["senhaForm"]
+        usuarios = carregar_usuarios()
+        user = usuarios.get(nome)
+        if user:
+            try:
+                senha_salva = fernet.decrypt(user["senha"].encode()).decode()
+                if senha_salva == senha:
+                    login_user(User(nome))
+                    return redirect(url_for("home"))
+            except Exception:
+                pass
+        error = "Usuário ou senha inválidos."
+    return render_template("login.html", error=error)
 
-        # Verifica se já existe usuário com este nome
-        usuario_existente = db.session.query(Usuario).filter_by(nome=nome).first()
-        if usuario_existente:
-            error = "Esse nome já esta sendo usado"
-            return render_template('registrar.html', error=error)
-        
-        novo_usuario = Usuario(nome=nome, senha=hash(senha))
-        db.session.add(novo_usuario)
-        db.session.commit()
+@app.route("/registrar", methods=["GET", "POST"])
+def registrar():
+    error = None
+    if request.method == "GET":
+        return render_template("registrar.html", error=error)
+    elif request.method == "POST":
+        nome = request.form["nomeForm"]
+        senha = request.form["senhaForm"]
+        usuarios = carregar_usuarios()
+        if nome in usuarios:
+            error = "Usuário já existe."
+            return render_template("registrar.html", error=error)
+        # Criptografa a senha
+        senha_cripto = fernet.encrypt(senha.encode()).decode()
+        usuarios[nome] = {"senha": senha_cripto}
+        salvar_usuarios(usuarios)
+        return render_template("login.html", error="Usuário registrado com sucesso. Faça login.")
 
-        login_user(novo_usuario)
-
-        return redirect(url_for('home'))
-    return render_template('registrar.html', error=error)
-
-@app.route('/logout')
+@app.route("/logout")
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for('home'))
+    return redirect(url_for("home"))
 
 if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()
     app.run(debug=True)
