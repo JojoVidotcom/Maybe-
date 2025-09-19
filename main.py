@@ -81,7 +81,7 @@ def home():
         })
         salvar_mensagens(mensagens)
         return redirect(url_for("home"))
-    return render_template("home.html", mensagens=mensagens)
+    return render_template("home.html", mensagens=mensagens[::-1])
 
 @app.route("/deletar_mensagem/<int:msg_id>", methods=["POST"])
 @login_required
@@ -90,6 +90,10 @@ def deletar_mensagem(msg_id):
     mensagens = [m for m in mensagens if not (m["id"] == msg_id and m["autor"] == current_user.nome)]
     salvar_mensagens(mensagens)
     return redirect(url_for("home"))
+
+@app.route("/info")
+def info():
+    return render_template("info.html")
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -126,7 +130,7 @@ def registrar():
         senha_cripto = fernet.encrypt(senha.encode()).decode()
         usuarios[nome] = {"senha": senha_cripto}
         salvar_usuarios(usuarios)
-        return render_template("login.html", error="Usuário registrado com sucesso. Faça login.")
+        return redirect(url_for("login"))
 
 @app.route("/logout")
 @login_required

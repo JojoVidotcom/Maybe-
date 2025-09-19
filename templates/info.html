@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Info - Redormouse</title>
+    <style>
+        html, body { height: 100%; margin: 0; padding: 0; font-family: 'Segoe UI', 'Liberation Sans', Arial, sans-serif; background-color: #f6f8fa; color: #24292f; }
+        body { min-height: 100vh; width: 100vw; overflow-x: hidden; }
+        .gh-navbar { width: 100vw; background: #24292f; color: #fff; height: 56px; display: flex; align-items: center; padding: 0 24px; box-sizing: border-box; position: sticky; top: 0; z-index: 200; box-shadow: 0 2px 4px #00000007; }
+        .gh-navbar .gh-logo { font-weight: 700; font-size: 1.35rem; letter-spacing: 0.5px; color: #fff; text-decoration: none; display: flex; align-items: center; }
+        .gh-navbar .gh-logo img { height: 32px; margin-right: 10px; }
+        .gh-navbar .gh-spacer { flex: 1; }
+        .gh-navbar .gh-user { font-size: 1rem; color: #fff; margin-right: 16px; }
+        .gh-navbar .gh-btn, .gh-navbar .gh-btn-logout { background: #3498db; color: #fff; border: none; padding: 6px 16px; border-radius: 6px; font-size: 1rem; font-weight: 500; cursor: pointer; text-decoration: none; margin-left: 10px; transition: background 0.2s; }
+        .gh-navbar .gh-btn-logout { background: #e74c3c; }
+        .gh-navbar .gh-btn:hover { background: #217dbb; }
+        .gh-navbar .gh-btn-logout:hover { background: #b03a2e; }
+        .info-container { width: 100vw; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; }
+        .info-box { margin-top: 60px; background: #fff; padding: 30px 36px; border-radius: 8px; box-shadow: 0 2px 8px #0001; border: 1px solid #d0d7de; min-width: 300px; max-width: 500px; }
+        .info-title { font-size: 1.5rem; font-weight: 600; margin-bottom: 16px; color: #24292f; text-align: center; }
+        .info-text { font-size: 1.08rem; color: #444; line-height: 1.7; text-align: center; }
+        @media (max-width: 600px) { 
+            .gh-navbar { padding: 0 4vw; height: 48px; }
+            .info-box { margin-top: 32px; padding: 14px 2vw; min-width: unset; width: 94vw; max-width: unset; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="gh-navbar">
+        <a class="gh-logo" href="{{ url_for('home') }}">
+            <img src="{{ url_for('static', filename='Capturar.PNG') }}" alt="Logo">
+            Redormouse
+        </a>
+        <div class="gh-spacer"></div>
+        {% if current_user.is_authenticated %}
+            <span class="gh-user">Olá, {{ current_user.nome }}</span>
+            <a href="{{ url_for('info') }}" class="gh-btn" style="background:#666;margin-left:0;margin-right:10px;">Info</a>
+            <a href="{{ url_for('logout') }}" class="gh-btn-logout">Sair</a>
+        {% else %}
+            <a href="{{ url_for('info') }}" class="gh-btn" style="background:#666;margin-left:0;margin-right:10px;">Info</a>
+            <a href="{{ url_for('login') }}" class="gh-btn">Login</a>
+            <a href="{{ url_for('registrar') }}" class="gh-btn" style="background:#0969da;">Cadastrar</a>
+        {% endif %}
+    </nav>
+    <div class="info-container">
+        <div class="info-box">
+            <div class="info-title">Informações</div>
+            <div class="info-text">
+                <!-- Texto exemplo; personalize! -->
+                Bem-vindo à página de informações do Redormouse.<br>
+                Aqui você pode encontrar detalhes sobre o funcionamento do sistema, dicas de uso, regras da comunidade ou qualquer outro conteúdo útil.<br><br>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

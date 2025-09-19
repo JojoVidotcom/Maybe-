@@ -41,8 +41,11 @@
         <div class="gh-spacer"></div>
         {% if current_user.is_authenticated %}
             <span class="gh-user">Olá, {{ current_user.nome }}</span>
+            <a href="{{ url_for('info') }}" class="gh-btn" style="background:#666;margin-left:0;margin-right:10px;">Info</a>
             <a href="{{ url_for('logout') }}" class="gh-btn-logout">Sair</a>
         {% else %}
+            <!-- Adiciona o link para info.html à esquerda do botão de login -->
+            <a href="{{ url_for('info') }}" class="gh-btn" style="background:#666;margin-left:0;margin-right:10px;">Info</a>
             <a href="{{ url_for('login') }}" class="gh-btn">Login</a>
             <a href="{{ url_for('registrar') }}" class="gh-btn" style="background:#0969da;">Cadastrar</a>
         {% endif %}
